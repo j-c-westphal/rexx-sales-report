@@ -1,4 +1,5 @@
-# Sales Report: Eine Code Challenge von rexx systems GmbH
+# Sales Report
+Eine Code Challenge von rexx systems GmbH
 
 ## Szenario
 Stelle Dir vor, ein Freund - der Inhaber einer kleinen Buchhandlung - bittet Dich um eine einfache Darstellung seiner neuesten Verkäufe. Er stellt Dir eine einfache Json-Exportdatei zur Verfügung.
