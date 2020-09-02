@@ -18,4 +18,9 @@ class Sale extends Model
     {
         return Carbon::parse($this->sale_date, 'UTC')->timestamp;
     }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
 }

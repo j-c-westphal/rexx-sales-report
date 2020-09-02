@@ -10,9 +10,79 @@ $(document).ready(function () {
 
     const dateCol = 1;
     const dateUnixCol = 2;
+    const customerCol = 3;
+    const productCol = 5;
     const priceCol = 7;
 
-    $sales.DataTable({
+    /**
+     * Date range filter
+     */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data) {
+            const dateUnix = parseInt(data[dateUnixCol]) || 0;
+
+            let startDate = $('#startDate').datepicker('getUTCDate');
+            let endDate = $('#endDate').datepicker('getUTCDate');
+
+            if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+                return true;
+            }
+
+            startDate = Math.round(startDate.getTime() / 1000);
+            endDate = Math.round(endDate.getTime() / 1000) + 86400;
+
+            return (isNaN(startDate) && isNaN(endDate)) ||
+                (isNaN(startDate) && dateUnix <= endDate) ||
+                (startDate <= dateUnix && isNaN(endDate)) ||
+                (startDate <= dateUnix && dateUnix <= endDate);
+        }
+    );
+
+    /**
+     * Customer name filter
+     */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data) {
+            const customerValue = data[customerCol];
+            const customerFilter = $('#customer').val();
+
+            if (typeof customerFilter !== 'string' || !customerFilter.length) {
+                return true;
+            }
+
+            return customerValue === customerFilter;
+        }
+    );
+
+    /**
+     * Product filter
+     */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data) {
+            const productValue = parseInt(data[productCol]);
+            const productFilter = parseInt($('#product').val()) || 0;
+
+            if (productFilter < 1) {
+                return true;
+            }
+
+            return productValue === productFilter;
+        }
+    );
+
+    /**
+     * Remove loader on init event
+     */
+    $sales.on('init.dt', function () {
+        $('#loader').fadeOut('fast', 'swing', function () {
+            $(this).remove();
+        });
+    });
+
+    /**
+     * Init DataTable
+     */
+    let dataTable = $sales.DataTable({
         responsive: true,
         "footerCallback": function () {
             let api = this.api(),
@@ -29,8 +99,7 @@ $(document).ready(function () {
             },
             {
                 "targets": dateUnixCol,
-                "visible": false,
-                "searchable": false
+                "visible": false
             },
             {
                 "targets": priceCol,
@@ -84,5 +153,12 @@ $(document).ready(function () {
                 }
             }
         }
+    });
+
+    /**
+     * Force redraw on filter input
+     */
+    $('#startDate, #endDate, #customer, #product').change(function () {
+        dataTable.draw();
     });
 });

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Report;
+use App\Sale;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -54,9 +56,13 @@ class ReportController extends Controller
             } else {
                 $date = Carbon::parse($sale['sale_date'], 'UTC');
             }
+
             $sale['sale_date'] = $date->toDateTimeString();
 
-            $report->sales()->create($sale);
+            $sale = collect($sale)->except(['product_id', 'product_name', 'product_price'])->toArray();
+            $product = collect($sale)->only(['product_id', 'product_name', 'product_price'])->toArray();
+
+            $report->sales()->create($sale)->product()->firstOrCreate($product);
         }
 
         return redirect()->route('reports.create')
@@ -71,6 +77,9 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        return view('reports.show', compact('report'));
+        $customers = $report->sales()->pluck('customer_name')->unique();
+        $products = Product::select('ref', 'name')->distinct()->get()->toArray();
+
+        return view('reports.show', compact('report', 'customers', 'products'));
     }
 }

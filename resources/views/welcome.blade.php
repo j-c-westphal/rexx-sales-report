@@ -91,7 +91,7 @@
                     Eine Code Challenge von rexx systems GmbH
                 </div>
                 <div class="subtitle mb">
-                    Jan Westphal
+                    Entwickler: Jan Westphal
                 </div>
 
                 <div class="links">
