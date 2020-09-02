@@ -1,0 +1,41 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Data Tables
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+@import '~datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css';
+
+#report-wrap {
+    position: relative;
+}
+
+#sales_wrapper {
+    margin-top: 1rem;
+}
+
+#loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+}
+
+table.table-bordered.dataTable tfoot th,
+table.table-bordered.dataTable tfoot td {
+    border-top-width: 3px;
+}
+
+// Datepicker
+@import '~bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css';
+
+.input-daterange input {
+    text-align: left;
+}
