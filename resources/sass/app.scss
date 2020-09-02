@@ -6,3 +6,12 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Data Tables
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+@import '~datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css';
+
+table.table-bordered.dataTable tfoot th,
+table.table-bordered.dataTable tfoot td {
+    border-top-width: 3px;
+}

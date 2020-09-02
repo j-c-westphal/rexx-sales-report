@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('Report auswählen') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +14,14 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <div class="list-group">
+                        @foreach ($reports as $report)
+                            <a class="list-group-item list-group-item-action"
+                               href="{{ route('reports.show', $report->id) }}">
+                                #{{ str_pad($loop->iteration, 4, '0', STR_PAD_LEFT) }} {{ $report->slug }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

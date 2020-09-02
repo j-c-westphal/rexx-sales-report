@@ -146,6 +146,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'slug' => 'Report name',
+        'file' => 'JSON file'
+    ],
 
 ];

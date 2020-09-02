@@ -62,8 +62,8 @@
                 text-transform: uppercase;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
+            .mb {
+                margin-bottom: 50px;
             }
         </style>
     </head>
@@ -87,17 +87,17 @@
                 <div class="title">
                     Sales Report
                 </div>
-                <div class="subtitle m-b-md">
+                <div class="subtitle mb">
                     Eine Code Challenge von rexx systems GmbH
                 </div>
-                <div class="subtitle m-b-md">
+                <div class="subtitle mb">
                     Jan Westphal
                 </div>
 
                 <div class="links">
                     <a href="{{ url('/home') }}">Zur Lösung</a>
-                    <a href="https://www.xing.com/profile/Jan_Westphal23/cv" target="_blank">Zum Xing-Profil</a>
                     <a href="https://github.com/j-c-westphal/rexx-sales-report" target="_blank">Zum Git-Repository</a>
+                    <a href="https://www.xing.com/profile/Jan_Westphal23/cv" target="_blank">Zum Xing-Profil</a>
                 </div>
             </div>
         </div>

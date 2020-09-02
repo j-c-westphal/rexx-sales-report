@@ -20,5 +20,9 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('home', 'HomeController@index')->name('home');
+
+    Route::resource('reports', 'ReportController', [
+        'except' => ['index', 'edit', 'update', 'destroy']
+    ]);
 });
