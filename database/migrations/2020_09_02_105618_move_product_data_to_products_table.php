@@ -19,9 +19,9 @@ class MoveProductDataToProductsTable extends Migration
 
         foreach ($sales as $sale) {
             $product = Product::firstOrCreate([
-                'ref' => $sale->product_id,
-                'name' => $sale->product_name,
-                'price' => $sale->product_price
+                'product_id' => $sale->product_id,
+                'product_name' => $sale->product_name,
+                'product_price' => $sale->product_price
             ]);
 
             $sale->product()->associate($product);
@@ -29,7 +29,7 @@ class MoveProductDataToProductsTable extends Migration
         }
 
         Schema::table('sales', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id')->change();
+            $table->unsignedBigInteger('product_id')->nullable()->change();
             $table->foreign('product_id')->references('id')->on('products')
                 ->onDelete('cascade');
 
@@ -54,9 +54,9 @@ class MoveProductDataToProductsTable extends Migration
 
         foreach ($products as $product) {
             foreach ($product->sales()->get() as $sale) {
-                $sale->product_id = $product->ref;
-                $sale->product_name = $product->name;
-                $sale->product_price = $product->price;
+                $sale->product_id = $product->product_id;
+                $sale->product_name = $product->product_name;
+                $sale->product_price = $product->product_price;
                 $sale->save();
             }
         }
@@ -66,7 +66,7 @@ class MoveProductDataToProductsTable extends Migration
         });
 
         Schema::table('sales', function (Blueprint $table) {
-            $table->integer('product_id')->change();
+            $table->integer('product_id')->nullable(false)->change();
         });
     }
 }

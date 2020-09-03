@@ -5,16 +5,12 @@ namespace App\Http\Controllers;
 use App\Report;
 use App\Sale;
 use App\Product;
+use App\Rexx\CompareVersions\Version as RexxVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
-    public function __construct()
-    {
-        define('VERSION_IS_LOWER', -1);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +47,11 @@ class ReportController extends Controller
         $report = Report::create(['slug' => $request->slug]);
 
         foreach ($sales as $sale) {
-            if (VERSION_IS_LOWER === version_compare($sale['version'], '1.0.17+60')) {
+            // Class to check if version is lower than 1.0.17+60...
+            $version = new RexxVersion($sale['version']);
+
+            if ($version->isLower()) {
+                // ...if true, convert date timezone from Europe/Berlin to UTC
                 $date = Carbon::parse($sale['sale_date'], 'Europe/Berlin')->setTimezone('UTC');
             } else {
                 $date = Carbon::parse($sale['sale_date'], 'UTC');
@@ -59,10 +59,20 @@ class ReportController extends Controller
 
             $sale['sale_date'] = $date->toDateTimeString();
 
-            $sale = collect($sale)->except(['product_id', 'product_name', 'product_price'])->toArray();
-            $product = collect($sale)->only(['product_id', 'product_name', 'product_price'])->toArray();
+            // Split data into sale related and product related data
+            $saleArray = collect($sale)->except(['product_id', 'product_name', 'product_price'])->toArray();
+            $productArray = collect($sale)->only(['product_id', 'product_name', 'product_price'])->toArray();
 
-            $report->sales()->create($sale)->product()->firstOrCreate($product);
+            // Create product if no combination of product_id, product_name and product_price exists,
+            // otherwise get the existing one
+            $productObject = Product::firstOrCreate($productArray);
+
+            // Create entry in sales table...
+            $saleObject = $report->sales()->create($saleArray);
+
+            // ...and associate the product
+            $saleObject->product()->associate($productObject);
+            $saleObject->save();
         }
 
         return redirect()->route('reports.create')
@@ -78,7 +88,7 @@ class ReportController extends Controller
     public function show(Report $report)
     {
         $customers = $report->sales()->pluck('customer_name')->unique();
-        $products = Product::select('ref', 'name')->distinct()->get()->toArray();
+        $products = Product::select('product_id', 'product_name')->distinct()->get()->toArray();
 
         return view('reports.show', compact('report', 'customers', 'products'));
     }

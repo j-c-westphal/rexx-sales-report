@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-    protected $fillable = ['slug'];
+    protected $guarded = [];
 
     public function sales()
     {

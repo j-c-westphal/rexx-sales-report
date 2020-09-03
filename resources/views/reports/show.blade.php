@@ -36,7 +36,9 @@
                                     <select class="form-control form-control-sm" id="product">
                                         <option value="0">Alle</option>
                                         @foreach ($products as $product)
-                                            <option value="{{ $product['ref'] }}">{{ $product['name'] }}</option>
+                                            <option value="{{ $product['product_id'] }}">
+                                                {{ $product['product_name'] }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,9 +66,9 @@
                                     <td>{{ $sale->sale_date_unix }}</td>
                                     <td>{{ $sale->customer_name }}</td>
                                     <td>{{ $sale->customer_mail }}</td>
-                                    <td>{{ $sale->product->ref }}</td>
-                                    <td>{{ $sale->product->name }}</td>
-                                    <td>{{ $sale->product->price }}</td>
+                                    <td>{{ $sale->product->product_id }}</td>
+                                    <td>{{ $sale->product->product_name }}</td>
+                                    <td>{{ $sale->product->product_price }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

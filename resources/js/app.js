@@ -1,6 +1,3 @@
-// Bootstrap
-require('./bootstrap');
-
 // Intl
 if (!global.Intl) {
     require('intl');
@@ -8,9 +5,14 @@ if (!global.Intl) {
     require('intl/locale-data/jsonp/de.js');
 }
 
+// jQuery
+window.$ = window.jQuery = require('jquery');
+
+// Bootstrap
+import 'bootstrap';
+
 // Data Tables
 // Init first
-import 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import 'datatables.net-responsive';
